@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Result Report</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2 class="text-center">Result Report</h2>
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <form id="resultForm">
+        <div class="mb-3">
+          <label for="bangla" class="form-label">Bangla</label>
+          <input type="number" class="form-control" id="bangla" required>
+        </div>
+        <div class="mb-3">
+          <label for="english" class="form-label">English</label>
+          <input type="number" class="form-control" id="english" required>
+        </div>
+        <div class="mb-3">
+          <label for="math" class="form-label">Math</label>
+          <input type="number" class="form-control" id="math" required>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="calculateResult()">Generate Report</button>
+      </form>
+      <hr>
+      <div id="result" class="mt-4" style="display: none;">
+        <h4>Subject-wise Grading:</h4>
+        <ul id="subjectGrades"></ul>
+        <h4>Total Marks: <span id="totalMarks"></span></h4>
+        <h4>Total Grade: <span id="totalGrade"></span></h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function calculateResult() {
+    var bangla = parseInt(document.getElementById('bangla').value);
+    var english = parseInt(document.getElementById('english').value);
+    var math = parseInt(document.getElementById('math').value);
+    
+    var totalMarks = bangla + english + math;
+    var totalPercentage = (totalMarks / 300) * 100; 
+    
+    var grades = {
+      bangla: getGrade(bangla),
+      english: getGrade(english),
+      math: getGrade(math)
+    };
+    
+    var totalGrade = getGradeByPercentage(totalPercentage);
+    
+    document.getElementById('totalMarks').textContent = totalMarks;
+    document.getElementById('totalGrade').textContent = totalGrade;
+    
+    var subjectGrades = document.getElementById('subjectGrades');
+    subjectGrades.innerHTML = '';
+    for (var subject in grades) {
+      var li = document.createElement('li');
+      li.textContent = subject.charAt(0).toUpperCase() + subject.slice(1) + ": " + grades[subject];
+      subjectGrades.appendChild(li);
+    }
+    
+    document.getElementById('result').style.display = 'block';
+  }
+
+  // Function Score score
+  function getGrade(score) {
+    if (score >= 80) return 'A+';
+    if (score >= 70) return 'A';
+    if (score >= 60) return 'A-';
+    if (score >= 50) return 'B';
+    if (score >= 40) return 'C';
+    return 'Fail';
+  }
+
+  // Function for total percentage
+  function getGradeByPercentage(percentage) {
+    if (percentage >= 80) return 'A+';
+    if (percentage >= 70) return 'A';
+    if (percentage >= 60) return 'A-';
+    if (percentage >= 50) return 'B';
+    if (percentage >= 40) return 'C';
+    return 'Fail';
+  }
+</script>
+
+</body>
+</html>
